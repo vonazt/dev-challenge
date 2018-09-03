@@ -14,5 +14,9 @@ type Product {
   id: ID!
   name: String!
   price: Int!
-  suppliedBy(id: ID!): Supplier!
+  suppliedBy: Supplier!
+}
+
+type Mutation {
+  createSupplier(name: String!, products: String!): Supplier!
 }
