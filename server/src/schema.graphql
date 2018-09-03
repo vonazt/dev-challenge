@@ -1,0 +1,18 @@
+type Query {
+  suppliers: [Supplier!]!
+  supplier(id: ID!): Supplier
+}
+
+type Supplier {
+  id: ID!
+  name: String!
+  products: [Product!]!
+  product(id: ID!): Product
+}
+
+type Product {
+  id: ID!
+  name: String!
+  price: Int!
+  suppliedBy(id: ID!): Supplier!
+}
