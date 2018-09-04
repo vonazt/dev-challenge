@@ -1,44 +1,11 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
-
-
-// 1
-// const suppliers = [{
-//   id: 'supplier-0',
-//   name: 'New Co Ltd',
-//   products: [{
-//     name: 'Small Wrongle',
-//     id: 'product-0',
-//     price: 5,
-//     suppliedBy: 'New Co Ltd'
-//   }]
-// }, {
-//   id: 'supplier-1',
-//   name: 'Old Co Ltd',
-//   products: [{
-//     name: 'Mini Wongle',
-//     id: 'product-1',
-//     price: 4,
-//     suppliedBy: 'Old Co Ltd'
-//   }]
-// }];
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
 
 const resolvers = {
-  Query: {
-    suppliers: (root, args, context, info) => {
-      return context.db.query.suppliers({}, info);
-    }
-  },
-  Mutation: {
-    createSupplier: (root, args, context, info) => {
-      return context.db.mutation.createSupplier({
-        data: {
-          name: args.name,
-          products: [args.products]
-        }
-      }, info);
-    }
-  }
+  Query,
+  Mutation
 };
 
 const server = new GraphQLServer({

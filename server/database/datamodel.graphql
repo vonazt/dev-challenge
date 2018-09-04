@@ -1,13 +1,6 @@
-
-type Supplier {
-  id: ID! @unique
-  name: String!
-  products: [Product!]!
-}
-
 type Product {
   id: ID! @unique
   name: String!
   price: Int!
-  suppliedBy: Supplier!
+  suppliedBy: String!
 }

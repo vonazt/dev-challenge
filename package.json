@@ -18,6 +18,8 @@
   "homepage": "https://github.com/JDLT-Ltd/dev-challenge#readme",
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "jquery": "^3.2.1"
+    "graphql-yoga": "^1.16.2",
+    "jquery": "^3.2.1",
+    "prisma-binding": "^2.1.5"
   }
 }

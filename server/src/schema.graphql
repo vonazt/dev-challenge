@@ -1,22 +1,15 @@
 type Query {
-  suppliers: [Supplier!]!
-  supplier(id: ID!): Supplier
-}
-
-type Supplier {
-  id: ID!
-  name: String!
-  products: [Product!]!
-  product(id: ID!): Product
+  allProducts(filter: String): [Product!]!
+  product(id: ID!): [Product!]!
 }
 
 type Product {
   id: ID!
   name: String!
   price: Int!
-  suppliedBy: Supplier!
+  suppliedBy: String!
 }
 
 type Mutation {
-  createSupplier(name: String!, products: String!): Supplier!
+  createProduct(name: String!, price: Int!, suppliedBy: String!): Product!
 }

@@ -1,11 +1,7 @@
 # source: https://eu1.prisma.sh/richardtzanov-38ba04/jdlt-challenge/dev
-# timestamp: Mon Sep 03 2018 16:11:21 GMT+0100 (BST)
+# timestamp: Tue Sep 04 2018 10:53:29 GMT+0100 (BST)
 
 type AggregateProduct {
-  count: Int!
-}
-
-type AggregateSupplier {
   count: Int!
 }
 
@@ -21,17 +17,11 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createSupplier(data: SupplierCreateInput!): Supplier!
   createProduct(data: ProductCreateInput!): Product!
-  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
-  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
   deleteProduct(where: ProductWhereUniqueInput!): Product
-  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
-  updateManySuppliers(data: SupplierUpdateInput!, where: SupplierWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateInput!, where: ProductWhereInput): BatchPayload!
-  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
 }
 
@@ -66,7 +56,7 @@ type Product implements Node {
   id: ID!
   name: String!
   price: Int!
-  suppliedBy(where: SupplierWhereInput): Supplier!
+  suppliedBy: String!
 }
 
 """A connection to a list of items."""
@@ -82,17 +72,7 @@ type ProductConnection {
 input ProductCreateInput {
   name: String!
   price: Int!
-  suppliedBy: SupplierCreateOneWithoutProductsInput!
-}
-
-input ProductCreateManyWithoutSuppliedByInput {
-  create: [ProductCreateWithoutSuppliedByInput!]
-  connect: [ProductWhereUniqueInput!]
-}
-
-input ProductCreateWithoutSuppliedByInput {
-  name: String!
-  price: Int!
+  suppliedBy: String!
 }
 
 """An edge in a connection."""
@@ -111,6 +91,8 @@ enum ProductOrderByInput {
   name_DESC
   price_ASC
   price_DESC
+  suppliedBy_ASC
+  suppliedBy_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -121,6 +103,7 @@ type ProductPreviousValues {
   id: ID!
   name: String!
   price: Int!
+  suppliedBy: String!
 }
 
 type ProductSubscriptionPayload {
@@ -165,32 +148,7 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateInput {
   name: String
   price: Int
-  suppliedBy: SupplierUpdateOneWithoutProductsInput
-}
-
-input ProductUpdateManyWithoutSuppliedByInput {
-  create: [ProductCreateWithoutSuppliedByInput!]
-  connect: [ProductWhereUniqueInput!]
-  disconnect: [ProductWhereUniqueInput!]
-  delete: [ProductWhereUniqueInput!]
-  update: [ProductUpdateWithWhereUniqueWithoutSuppliedByInput!]
-  upsert: [ProductUpsertWithWhereUniqueWithoutSuppliedByInput!]
-}
-
-input ProductUpdateWithoutSuppliedByDataInput {
-  name: String
-  price: Int
-}
-
-input ProductUpdateWithWhereUniqueWithoutSuppliedByInput {
-  where: ProductWhereUniqueInput!
-  data: ProductUpdateWithoutSuppliedByDataInput!
-}
-
-input ProductUpsertWithWhereUniqueWithoutSuppliedByInput {
-  where: ProductWhereUniqueInput!
-  update: ProductUpdateWithoutSuppliedByDataInput!
-  create: ProductCreateWithoutSuppliedByInput!
+  suppliedBy: String
 }
 
 input ProductWhereInput {
@@ -304,7 +262,46 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   price_gte: Int
-  suppliedBy: SupplierWhereInput
+  suppliedBy: String
+
+  """All values that are not equal to given value."""
+  suppliedBy_not: String
+
+  """All values that are contained in given list."""
+  suppliedBy_in: [String!]
+
+  """All values that are not contained in given list."""
+  suppliedBy_not_in: [String!]
+
+  """All values less than the given value."""
+  suppliedBy_lt: String
+
+  """All values less than or equal the given value."""
+  suppliedBy_lte: String
+
+  """All values greater than the given value."""
+  suppliedBy_gt: String
+
+  """All values greater than or equal the given value."""
+  suppliedBy_gte: String
+
+  """All values containing the given string."""
+  suppliedBy_contains: String
+
+  """All values not containing the given string."""
+  suppliedBy_not_contains: String
+
+  """All values starting with the given string."""
+  suppliedBy_starts_with: String
+
+  """All values not starting with the given string."""
+  suppliedBy_not_starts_with: String
+
+  """All values ending with the given string."""
+  suppliedBy_ends_with: String
+
+  """All values not ending with the given string."""
+  suppliedBy_not_ends_with: String
 }
 
 input ProductWhereUniqueInput {
@@ -312,11 +309,8 @@ input ProductWhereUniqueInput {
 }
 
 type Query {
-  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
-  supplier(where: SupplierWhereUniqueInput!): Supplier
   product(where: ProductWhereUniqueInput!): Product
-  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
 
   """Fetches an object given its ID"""
@@ -327,220 +321,5 @@ type Query {
 }
 
 type Subscription {
-  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
-}
-
-type Supplier implements Node {
-  id: ID!
-  name: String!
-  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
-}
-
-"""A connection to a list of items."""
-type SupplierConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [SupplierEdge]!
-  aggregate: AggregateSupplier!
-}
-
-input SupplierCreateInput {
-  name: String!
-  products: ProductCreateManyWithoutSuppliedByInput
-}
-
-input SupplierCreateOneWithoutProductsInput {
-  create: SupplierCreateWithoutProductsInput
-  connect: SupplierWhereUniqueInput
-}
-
-input SupplierCreateWithoutProductsInput {
-  name: String!
-}
-
-"""An edge in a connection."""
-type SupplierEdge {
-  """The item at the end of the edge."""
-  node: Supplier!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum SupplierOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type SupplierPreviousValues {
-  id: ID!
-  name: String!
-}
-
-type SupplierSubscriptionPayload {
-  mutation: MutationType!
-  node: Supplier
-  updatedFields: [String!]
-  previousValues: SupplierPreviousValues
-}
-
-input SupplierSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [SupplierSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [SupplierSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [SupplierSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: SupplierWhereInput
-}
-
-input SupplierUpdateInput {
-  name: String
-  products: ProductUpdateManyWithoutSuppliedByInput
-}
-
-input SupplierUpdateOneWithoutProductsInput {
-  create: SupplierCreateWithoutProductsInput
-  connect: SupplierWhereUniqueInput
-  delete: Boolean
-  update: SupplierUpdateWithoutProductsDataInput
-  upsert: SupplierUpsertWithoutProductsInput
-}
-
-input SupplierUpdateWithoutProductsDataInput {
-  name: String
-}
-
-input SupplierUpsertWithoutProductsInput {
-  update: SupplierUpdateWithoutProductsDataInput!
-  create: SupplierCreateWithoutProductsInput!
-}
-
-input SupplierWhereInput {
-  """Logical AND on all given filters."""
-  AND: [SupplierWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [SupplierWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [SupplierWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-  products_every: ProductWhereInput
-  products_some: ProductWhereInput
-  products_none: ProductWhereInput
-}
-
-input SupplierWhereUniqueInput {
-  id: ID
 }
