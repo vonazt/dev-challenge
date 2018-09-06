@@ -1,6 +1,8 @@
 type Query {
   allProducts(filter: String): [Product!]!
   product(id: ID!): [Product!]!
+  allUsers: [User!]!
+  userProducts(id: ID!): [User!]!
 }
 
 type Product {
