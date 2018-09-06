@@ -26,7 +26,7 @@ const SupplierProducts = ({ pickedSupplier, pickedProduct, supplierId, handleCha
           const productsToRender = data.user[0].products;
           return (
             <div>
-              <div className="field column is-half-mobile is-half-desktop is-half-tablet">
+              <div className="field column is-half">
                 <label className="label">Products</label>
                 <div className="control">
                   <div className="select is-fullwidth">

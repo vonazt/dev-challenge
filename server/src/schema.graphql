@@ -1,5 +1,6 @@
 type Query {
   product(id: ID!): [Product!]!
+  search(filter: String): Search!
   allUsers: [User!]!
   user(id: ID!): [User!]!
   userProducts(id: ID!): [User!]!
@@ -10,6 +11,10 @@ type Product {
   name: String!
   price: Int!
   suppliedBy: User
+}
+
+type Search {
+  products: [Product!]
 }
 
 type Mutation {

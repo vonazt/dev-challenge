@@ -4,6 +4,7 @@ import ProductList from './ProductList';
 import CreateProduct from './CreateProduct';
 import Navbar from './Navbar';
 import Login from './Login';
+import Search from './Search';
 import { Switch, Route } from 'react-router-dom';
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
               <Route exact path="/products/new" component={CreateProduct} />
               <Route exact path="/products" component={ProductList} />
               <Route exact path="/login" component={Login} />
+              <Route exact path='/search' component={Search} />
               <Route exact path="/" component={Home} />
             </Switch>
           </div>

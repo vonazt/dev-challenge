@@ -13,6 +13,7 @@ class Navbar extends Component {
           <div className="navbar-end">
             <Link to="/" className="navbar-item">Wongle Home</Link>
             <Link to="/products" className="navbar-item">Wongle Info</Link>
+            <Link to="/search" className="navbar-item">Search Wongles</Link>
             {authToken && <Link to="/products/new" className="navbar-item">Add Wongle</Link>}
             {authToken ? (
               <div className="navbar-item" onClick={() => {
