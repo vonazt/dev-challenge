@@ -11,7 +11,7 @@ class Navbar extends Component {
 
         <div className="navbar-menu">
           <div className="navbar-end">
-            <Link to="/" className="navbar-item">All Products</Link>
+            <Link to="/" className="navbar-item">Product Info</Link>
             {authToken && <Link to="/products/new" className="navbar-item">Add Product</Link>}
             {authToken ? (
               <div className="navbar-item" onClick={() => {

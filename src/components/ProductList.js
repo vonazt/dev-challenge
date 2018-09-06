@@ -10,6 +10,7 @@ class ProductList extends Component {
   }
 
   handleSupplierChange = (e) => {
+    if (this.state.pickedProduct) this.setState({ pickedProduct: '' });
     const selectedIndex = e.target.options.selectedIndex;
     const supplierId = e.target.options[selectedIndex].getAttribute('data-id');
     this.setState({ pickedSupplier: e.target.value, supplierId: supplierId});
@@ -29,7 +30,7 @@ class ProductList extends Component {
 
         <SupplierProducts pickedSupplier={pickedSupplier} pickedProduct={pickedProduct} handleChange={this.handleProductChange} supplierId={supplierId} />
 
-        <ProductPrice pickedProduct={pickedProduct} productId={productId} />
+        <ProductPrice pickedProduct={pickedProduct} pickedSupplier={pickedSupplier} productId={productId} />
       </div>
     );
   }

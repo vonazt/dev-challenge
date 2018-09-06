@@ -11,7 +11,7 @@ const PRODUCT_PRICE_QUERY = gql`
   }
 `;
 
-const ProductPrice = ({ pickedProduct, productId }) => {
+const ProductPrice = ({ pickedProduct, pickedSupplier, productId }) => {
   return (
     <div>
       {pickedProduct && <Query query={PRODUCT_PRICE_QUERY} variables={{ id: productId }}>
@@ -22,7 +22,7 @@ const ProductPrice = ({ pickedProduct, productId }) => {
           const product = data.product[0];
           return (
             <div>
-              <p>It costs {product.price}</p>
+              <p>The {pickedProduct} from {pickedSupplier} costs £{product.price}</p>
             </div>
           );
         }}
