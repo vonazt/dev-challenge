@@ -3,8 +3,8 @@ import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const PRODUCT_SEARCH_QUERY =gql`
-  query ProductSearchQuery($filter: String!) {
-    search(filter: $filter) {
+  query ProductSearchQuery($filter: String!, $orderBy: ProductOrderByInput) {
+    search(filter: $filter, orderBy: $orderBy) {
       products {
         name
         price
@@ -50,9 +50,10 @@ class Search extends Component {
   }
   _executeSearch = async () => {
     const { filter } = this.state;
+    const orderBy = 'name_ASC';
     const result = await this.props.client.query({
       query: PRODUCT_SEARCH_QUERY,
-      variables: { filter }
+      variables: { filter, orderBy }
     });
     const products = result.data.search.products;
     this.setState({ products });

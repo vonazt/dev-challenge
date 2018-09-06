@@ -1,6 +1,8 @@
+# import ProductOrderByInput from "./generated/prisma.graphql"
+
 type Query {
   product(id: ID!): [Product!]!
-  search(filter: String): Search!
+  search(filter: String, orderBy: ProductOrderByInput): Search!
   allUsers: [User!]!
   user(id: ID!): [User!]!
   userProducts(id: ID!): [User!]!

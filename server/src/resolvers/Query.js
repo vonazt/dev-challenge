@@ -19,7 +19,7 @@ async function search(parent, args, context, info) {
     ? { OR: [{ name_contains: args.filter }, { suppliedBy: { name_contains: args.filter } }] }
     : {};
 
-  const queriedProducts = await context.db.query.products({ where }, '{ id }');
+  const queriedProducts = await context.db.query.products({ where, orderBy: args.orderBy }, '{ id }');
 
   return {
     productIds: queriedProducts.map(product => product.id)
