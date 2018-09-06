@@ -7,9 +7,23 @@ type Product {
   id: ID!
   name: String!
   price: Int!
-  suppliedBy: String!
+  suppliedBy: User
 }
 
 type Mutation {
-  createProduct(name: String!, price: Int!, suppliedBy: String!): Product!
+  createProduct(name: String!, price: Int!): Product!
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  products: [Product!]!
 }

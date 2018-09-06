@@ -5,7 +5,7 @@ class Product extends Component {
     return (
       <div>
         <div>
-          Supplier: {this.props.product.suppliedBy} | Product: {this.props.product.name}: £{this.props.product.price}
+          Supplier: {this.props.product.suppliedBy.name} | Product: {this.props.product.name}: £{this.props.product.price}
         </div>
       </div>
     );

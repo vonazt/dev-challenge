@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/richardtzanov-38ba04/jdlt-challenge/dev
-# timestamp: Tue Sep 04 2018 10:53:29 GMT+0100 (BST)
+# timestamp: Tue Sep 04 2018 12:41:38 GMT+0100 (British Summer Time)
 
 type AggregateProduct {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -18,11 +22,17 @@ scalar Long
 
 type Mutation {
   createProduct(data: ProductCreateInput!): Product!
+  createUser(data: UserCreateInput!): User!
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteProduct(where: ProductWhereUniqueInput!): Product
+  deleteUser(where: UserWhereUniqueInput!): User
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyProducts(data: ProductUpdateInput!, where: ProductWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -56,7 +66,7 @@ type Product implements Node {
   id: ID!
   name: String!
   price: Int!
-  suppliedBy: String!
+  suppliedBy(where: UserWhereInput): User
 }
 
 """A connection to a list of items."""
@@ -72,7 +82,17 @@ type ProductConnection {
 input ProductCreateInput {
   name: String!
   price: Int!
-  suppliedBy: String!
+  suppliedBy: UserCreateOneWithoutProductsInput
+}
+
+input ProductCreateManyWithoutSuppliedByInput {
+  create: [ProductCreateWithoutSuppliedByInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
+input ProductCreateWithoutSuppliedByInput {
+  name: String!
+  price: Int!
 }
 
 """An edge in a connection."""
@@ -91,8 +111,6 @@ enum ProductOrderByInput {
   name_DESC
   price_ASC
   price_DESC
-  suppliedBy_ASC
-  suppliedBy_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -103,7 +121,6 @@ type ProductPreviousValues {
   id: ID!
   name: String!
   price: Int!
-  suppliedBy: String!
 }
 
 type ProductSubscriptionPayload {
@@ -148,7 +165,32 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateInput {
   name: String
   price: Int
-  suppliedBy: String
+  suppliedBy: UserUpdateOneWithoutProductsInput
+}
+
+input ProductUpdateManyWithoutSuppliedByInput {
+  create: [ProductCreateWithoutSuppliedByInput!]
+  connect: [ProductWhereUniqueInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  delete: [ProductWhereUniqueInput!]
+  update: [ProductUpdateWithWhereUniqueWithoutSuppliedByInput!]
+  upsert: [ProductUpsertWithWhereUniqueWithoutSuppliedByInput!]
+}
+
+input ProductUpdateWithoutSuppliedByDataInput {
+  name: String
+  price: Int
+}
+
+input ProductUpdateWithWhereUniqueWithoutSuppliedByInput {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateWithoutSuppliedByDataInput!
+}
+
+input ProductUpsertWithWhereUniqueWithoutSuppliedByInput {
+  where: ProductWhereUniqueInput!
+  update: ProductUpdateWithoutSuppliedByDataInput!
+  create: ProductCreateWithoutSuppliedByInput!
 }
 
 input ProductWhereInput {
@@ -262,46 +304,7 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   price_gte: Int
-  suppliedBy: String
-
-  """All values that are not equal to given value."""
-  suppliedBy_not: String
-
-  """All values that are contained in given list."""
-  suppliedBy_in: [String!]
-
-  """All values that are not contained in given list."""
-  suppliedBy_not_in: [String!]
-
-  """All values less than the given value."""
-  suppliedBy_lt: String
-
-  """All values less than or equal the given value."""
-  suppliedBy_lte: String
-
-  """All values greater than the given value."""
-  suppliedBy_gt: String
-
-  """All values greater than or equal the given value."""
-  suppliedBy_gte: String
-
-  """All values containing the given string."""
-  suppliedBy_contains: String
-
-  """All values not containing the given string."""
-  suppliedBy_not_contains: String
-
-  """All values starting with the given string."""
-  suppliedBy_starts_with: String
-
-  """All values not starting with the given string."""
-  suppliedBy_not_starts_with: String
-
-  """All values ending with the given string."""
-  suppliedBy_ends_with: String
-
-  """All values not ending with the given string."""
-  suppliedBy_not_ends_with: String
+  suppliedBy: UserWhereInput
 }
 
 input ProductWhereUniqueInput {
@@ -310,8 +313,11 @@ input ProductWhereUniqueInput {
 
 type Query {
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   product(where: ProductWhereUniqueInput!): Product
+  user(where: UserWhereUniqueInput!): User
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -322,4 +328,317 @@ type Query {
 
 type Subscription {
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type User implements Node {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  name: String!
+  email: String!
+  password: String!
+  products: ProductCreateManyWithoutSuppliedByInput
+}
+
+input UserCreateOneWithoutProductsInput {
+  create: UserCreateWithoutProductsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutProductsInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  name: String
+  email: String
+  password: String
+  products: ProductUpdateManyWithoutSuppliedByInput
+}
+
+input UserUpdateOneWithoutProductsInput {
+  create: UserCreateWithoutProductsInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutProductsDataInput
+  upsert: UserUpsertWithoutProductsInput
+}
+
+input UserUpdateWithoutProductsDataInput {
+  name: String
+  email: String
+  password: String
+}
+
+input UserUpsertWithoutProductsInput {
+  update: UserUpdateWithoutProductsDataInput!
+  create: UserCreateWithoutProductsInput!
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  products_every: ProductWhereInput
+  products_some: ProductWhereInput
+  products_none: ProductWhereInput
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
 }
