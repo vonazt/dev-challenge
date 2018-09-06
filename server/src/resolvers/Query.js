@@ -16,10 +16,10 @@ function userProducts(parent, args, context, info) {
 
 async function search(parent, args, context, info) {
   const where = args.filter
-    ? { OR: [{ name_contains: args.filter }, { suppliedBy: { name_contains: args.filter} }] }
+    ? { OR: [{ name_contains: args.filter }, { suppliedBy: { name_contains: args.filter } }] }
     : {};
 
-  const queriedProducts = await context.db.query.products({ where }, '{ id name price }');
+  const queriedProducts = await context.db.query.products({ where }, '{ id }');
 
   return {
     productIds: queriedProducts.map(product => product.id)
