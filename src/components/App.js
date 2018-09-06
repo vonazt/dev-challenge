@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Home from './Home';
 import ProductList from './ProductList';
 import CreateProduct from './CreateProduct';
 import Navbar from './Navbar';
@@ -15,9 +16,10 @@ class App extends Component {
         <section className="section">
           <div className="container">
             <Switch>
-              <Route exact path="/" component={ProductList} />
               <Route exact path="/products/new" component={CreateProduct} />
+              <Route exact path="/products" component={ProductList} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/" component={Home} />
             </Switch>
           </div>
         </section>

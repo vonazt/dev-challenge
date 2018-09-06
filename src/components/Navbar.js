@@ -11,8 +11,9 @@ class Navbar extends Component {
 
         <div className="navbar-menu">
           <div className="navbar-end">
-            <Link to="/" className="navbar-item">Product Info</Link>
-            {authToken && <Link to="/products/new" className="navbar-item">Add Product</Link>}
+            <Link to="/" className="navbar-item">Wongle Home</Link>
+            <Link to="/products" className="navbar-item">Wongle Info</Link>
+            {authToken && <Link to="/products/new" className="navbar-item">Add Wongle</Link>}
             {authToken ? (
               <div className="navbar-item" onClick={() => {
                 localStorage.removeItem(AUTH_TOKEN);
