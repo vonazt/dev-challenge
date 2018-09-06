@@ -21,6 +21,7 @@
   "homepage": "https://github.com/JDLT-Ltd/dev-challenge#readme",
   "dependencies": {
     "apollo-boost": "^0.1.15",
+    "apollo-link-context": "^1.0.8",
     "bootstrap": "^3.3.7",
     "bulma": "^0.7.1",
     "graphql": "^14.0.0",
