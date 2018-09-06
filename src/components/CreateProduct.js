@@ -40,7 +40,10 @@ class CreateProduct extends Component {
                 onChange={e => this.setState({ price: e.target.value })}
               />
             </div>
-            <Mutation mutation={CREATE_PRODUCT_MUTATION} variables={{name, price}} >
+            <Mutation
+              mutation={CREATE_PRODUCT_MUTATION}
+              variables={{name, price}}
+              onCompleted={() => this.props.history.push('/')} >
               {createProductMutation => <button className="button" onClick={createProductMutation}>Submit</button>}
             </Mutation>
           </div>
