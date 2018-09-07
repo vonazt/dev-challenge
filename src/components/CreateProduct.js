@@ -15,7 +15,7 @@ const CREATE_PRODUCT_MUTATION = gql`
 class CreateProduct extends Component {
   state = {
     name: '',
-    price: 0
+    price: ''
   }
 
   render() {
@@ -33,7 +33,7 @@ class CreateProduct extends Component {
               />
             </div>
             <div className="field column is-half">
-              <label className="label">Price</label>
+              <label className="label">Price (£)</label>
               <input
                 className="input"
                 value={price}
@@ -44,7 +44,7 @@ class CreateProduct extends Component {
               mutation={CREATE_PRODUCT_MUTATION}
               variables={{name, price}}
               onCompleted={() => this.props.history.push('/')} >
-              {createProductMutation => <button className="button" onClick={createProductMutation}>Submit</button>}
+              {createProductMutation => <button className="button add-product" onClick={createProductMutation}>Add product</button>}
             </Mutation>
           </div>
         </form>

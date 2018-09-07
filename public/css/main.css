@@ -1,4 +1,34 @@
 body {
   font-family: 'Ubuntu', sans-serif; }
 
+.is-red {
+  background-color: #8a0707; }
+
+.hero-body h1 {
+  color: white; }
+
+.hero-body h2 {
+  color: white; }
+
+.logout {
+  cursor: pointer; }
+
+.price-info {
+  margin-top: 2rem; }
+
+.search-button {
+  font-family: 'Ubuntu', sans-serif;
+  background-color: #8a0707;
+  color: white; }
+  .search-button:hover {
+    background-color: #7ec0ee; }
+  .search-button:focus {
+    color: white; }
+
+.add-product {
+  margin-left: 1rem; }
+
+.login-button {
+  margin-bottom: 1rem; }
+
 /*# sourceMappingURL=main.css.map */

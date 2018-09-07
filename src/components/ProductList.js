@@ -26,6 +26,7 @@ class ProductList extends Component {
     const { pickedSupplier, pickedProduct, supplierId, productId } = this.state;
     return (
       <div>
+        <h3 className="title is-3">Use the dropdowns to find out price info on wongles</h3>
         <AllSuppliers pickedSupplier={pickedSupplier} handleChange={this.handleSupplierChange} />
 
         <SupplierProducts pickedSupplier={pickedSupplier} pickedProduct={pickedProduct} handleChange={this.handleProductChange} supplierId={supplierId} />

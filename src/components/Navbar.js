@@ -16,7 +16,7 @@ class Navbar extends Component {
             <Link to="/search" className="navbar-item">Search Wongles</Link>
             {authToken && <Link to="/products/new" className="navbar-item">Add Wongle</Link>}
             {authToken ? (
-              <div className="navbar-item" onClick={() => {
+              <div className="navbar-item logout" onClick={() => {
                 localStorage.removeItem(AUTH_TOKEN);
                 this.props.history.push('/');
               }}

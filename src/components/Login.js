@@ -68,18 +68,19 @@ class Login extends Component {
             onCompleted={data => this._confirm(data)}
           >
             {mutation => (
-              <div className="button" onClick={mutation}>
-                {login ? 'login' : 'create account'}
+              <div className="button login-button" onClick={mutation}>
+                {login ? 'Login' : 'Create account'}
               </div>
             )}
           </Mutation>
+          <br />
           <div
             className="button"
             onClick={() => this.setState({ login: !login })}
           >
             {login
-              ? 'need to create an account?'
-              : 'already have an account?'}
+              ? 'Need to create an account?'
+              : 'Already have an account?'}
           </div>
         </div>
       </form>

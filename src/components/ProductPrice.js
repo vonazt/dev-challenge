@@ -21,8 +21,8 @@ const ProductPrice = ({ pickedProduct, pickedSupplier, productId }) => {
 
           const product = data.product[0];
           return (
-            <div>
-              <p>The {pickedProduct} from {pickedSupplier} costs £{product.price}</p>
+            <div className="price-info">
+              <h4 className="title is-4">The {pickedProduct.toLowerCase()} from {pickedSupplier} costs £{product.price}</h4>
             </div>
           );
         }}
