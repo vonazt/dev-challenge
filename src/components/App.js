@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Home from './Home';
-import ProductList from './ProductList';
-import CreateProduct from './CreateProduct';
-import Navbar from './Navbar';
-import Login from './Login';
-import Search from './Search';
+import Home from './pages/Home';
+import ProductList from './products/ProductList';
+import CreateProduct from './products/CreateProduct';
+import Navbar from './common/Navbar';
+import Login from './auth/Login';
+import Search from './products/Search';
 import { Switch, Route } from 'react-router-dom';
 
 class App extends Component {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AUTH_TOKEN } from '../constants';
+import { AUTH_TOKEN } from '../../constants';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -18,7 +18,6 @@ const LOGIN_MUTATION = gql`
     }
   }
 `;
-
 
 class Login extends Component {
   state = {
